@@ -164,7 +164,9 @@ public class Slingshot : MonoBehaviour
         // Debug.Log("Launch Magnitude: " + launchForce);
 
         GameObject rocketInstance = Instantiate(rocketTransform.gameObject, rocketTransform.position, rocketTransform.rotation);
+        rocketInstance.GetComponent<RocketCollision>().cameraManager = cameraManager;
         rocketInstance.transform.localScale = rocketTransform.localScale * 10;
+        rocketInstance.GetComponent<Collider2D>().isTrigger = false;
         rocketInstance.GetComponent<Rigidbody2D>().isKinematic = false;
         rocketInstance.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         rocketTransform.gameObject.SetActive(false);
@@ -203,9 +205,7 @@ public class Slingshot : MonoBehaviour
         barrelTransform.position = barrelOriginalPosition;
         barrelTransform.rotation = barrelOriginalRotation;
         chargeTime = 0;
+
+        cameraManager.FocusOnLauncher();
     }
-
-
-
-
 }

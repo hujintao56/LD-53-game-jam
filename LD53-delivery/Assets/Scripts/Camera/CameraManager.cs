@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using UnityEngine;
 
@@ -66,9 +67,15 @@ namespace Camera
 
                 if (Input.GetMouseButtonDown(1))
                 {
-                    camFollowPos = gameManager.currentLauncher.transform.position;
+                    FocusOnLauncher();
                 }
             }
+        }
+
+        public void FocusOnLauncher()
+        {
+            followingPackage = false;
+            camFollowPos = gameManager.currentLauncher.transform.position;
         }
     }
 }

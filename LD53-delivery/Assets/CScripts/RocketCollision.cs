@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Camera;
 using UnityEngine;
 
 public class RocketCollision : MonoBehaviour
 {
+    public CameraManager cameraManager;
+    
     public GameObject packPrefab; // Pack prefab
     public AudioClip explosionSound; // Explosion sound
     public GameObject explosionPrefab; // Explosion prefab
@@ -55,6 +58,7 @@ public class RocketCollision : MonoBehaviour
         Vector3 normal = transform.up;
         Vector3 position = transform.position + (normal * 0.5f);
         GameObject pack = Instantiate(packPrefab, position, Quaternion.identity);
+        cameraManager.FollowPackage(pack);
         Rigidbody2D packRb = pack.GetComponent<Rigidbody2D>();
         packRb.AddForce(normal * packExplosionForceMult, ForceMode2D.Impulse);
     }
