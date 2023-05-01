@@ -28,6 +28,7 @@ public class Slingshot : MonoBehaviour
     private float launchForce;                // The force that the rocket will be launched with
     private bool isAiming;                    // Whether the slingshot is in aiming state
 
+    public float setGravity = 1.0f;
 
     private void Start()
     {
@@ -159,7 +160,7 @@ public class Slingshot : MonoBehaviour
         Debug.Log("Launch Direction: " + direction);
         Debug.Log("Launch Magnitude: " + launchForce);
         rocketTransform.GetComponent<Rigidbody2D>().AddForce(launchSpeedMultiplier * launchForce * direction, ForceMode2D.Impulse);
-
+        rocketTransform.GetComponent<Rigidbody2D>().gravityScale = setGravity;
         Reset();
     }
 
@@ -189,6 +190,7 @@ public class Slingshot : MonoBehaviour
         rocketTransform.rotation = rocketOriginalRotation;
         rocketTransform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         rocketTransform.GetComponent<Rigidbody2D>().angularVelocity = 0f;
+        rocketTransform.GetComponent<Rigidbody2D>().gravityScale = 0;
         // barrelTransform.localEulerAngles = barrelOriginalRotation;
         // barrelTransform.position = launchTransform.position;
         // barrelTransform.rotation = Quaternion.identity;
