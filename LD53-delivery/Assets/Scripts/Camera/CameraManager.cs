@@ -16,7 +16,7 @@ namespace Camera
         [SerializeField] private float boundOffset = -1f;
         public GameObject packageFollowObject;
         public float edgeSize = 30f;
-        public float moveSpeed = 4f;
+        public float moveSpeed = 5f;
         private bool followingPackage;
             
         void Start()
