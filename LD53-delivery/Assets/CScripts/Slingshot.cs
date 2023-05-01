@@ -146,34 +146,26 @@ public class Slingshot : MonoBehaviour
 
         chargeTime += Time.deltaTime;
         launchForce = Mathf.Lerp(minLaunchForce, maxLaunchForce, chargeTime / maxChargeTime);
-        Debug.Log("Charge Time: " + chargeTime);
-        Debug.Log("Launch Force: " + launchForce);
+        // Debug.Log("Charge Time: " + chargeTime);
+        // Debug.Log("Launch Force: " + launchForce);
     }
 
     private void Fire()
     {
-        // Vector3 direction = (Input.mousePosition - mouseDownPosition).normalized;
-        // launchTransform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
+        // Debug.Log("Launch Direction: " + direction);
+        // Debug.Log("Launch Magnitude: " + launchForce);
 
-        // Vector3 direction = Quaternion.Euler(barrelTransform.localEulerAngles) * Vector3.up;
-        Debug.Log("Launch Direction: " + direction);
-        Debug.Log("Launch Magnitude: " + launchForce);
-        rocketTransform.GetComponent<Rigidbody2D>().AddForce(launchSpeedMultiplier * launchForce * direction, ForceMode2D.Impulse);
-        rocketTransform.GetComponent<Rigidbody2D>().gravityScale = setGravity;
+        GameObject rocketInstance = Instantiate(rocketTransform.gameObject, rocketTransform.position, rocketTransform.rotation);
+        rocketInstance.transform.localScale = rocketTransform.localScale * 10;
+        rocketInstance.GetComponent<Rigidbody2D>().isKinematic = false;
+        rocketInstance.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        rocketTransform.gameObject.SetActive(false);
+
+        rocketInstance.GetComponent<Rigidbody2D>().AddForce(launchSpeedMultiplier * launchForce * direction, ForceMode2D.Impulse);
+        rocketInstance.GetComponent<Rigidbody2D>().gravityScale = setGravity;
         Reset();
     }
 
-    /* private IEnumerator SpawnRocket()
-    {
-        yield return new WaitForSeconds(reloadTime);
-        Instantiate(rocketTransform, launchTransform.position, Quaternion.identity);
-    }
-
-    private void Reset()
-    {
-        barrelTransform.localEulerAngles = barrelOriginalRotation;
-        StartCoroutine(SpawnRocket());
-    }*/
 
     private void Reset()
     {
@@ -183,6 +175,8 @@ public class Slingshot : MonoBehaviour
     private IEnumerator ResetAfterDelay()
     {
         yield return new WaitForSeconds(reloadTime);
+
+        rocketTransform.gameObject.SetActive(true);
         //rocketTransform.position = launchTransform.position;
         //rocketTransform.rotation = Quaternion.identity;
         rocketTransform.position = rocketOriginalPosition;
@@ -190,11 +184,13 @@ public class Slingshot : MonoBehaviour
         rocketTransform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         rocketTransform.GetComponent<Rigidbody2D>().angularVelocity = 0f;
         rocketTransform.GetComponent<Rigidbody2D>().gravityScale = 0;
+
         // barrelTransform.localEulerAngles = barrelOriginalRotation;
         // barrelTransform.position = launchTransform.position;
         // barrelTransform.rotation = Quaternion.identity;
         barrelTransform.position = barrelOriginalPosition;
         barrelTransform.rotation = barrelOriginalRotation;
+        chargeTime = 0;
     }
 
 
