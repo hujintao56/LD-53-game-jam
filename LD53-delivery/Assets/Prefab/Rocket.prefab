@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   packPrefab: {fileID: 3922132125833484863, guid: 46c4f7921b9f348458000392b449898d, type: 3}
+  explosionSound: {fileID: 8300000, guid: fb88fd2fac9ca5344b69c6a9ed4f5e04, type: 3}
 --- !u!61 &7390390487893469393
 BoxCollider2D:
   m_ObjectHideFlags: 0
