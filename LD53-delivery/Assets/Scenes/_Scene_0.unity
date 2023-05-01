@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicator: {fileID: 1231988720}
-  camCenter: {fileID: 519420028}
+  cam: {fileID: 0}
 --- !u!1 &1167444751
 GameObject:
   m_ObjectHideFlags: 0

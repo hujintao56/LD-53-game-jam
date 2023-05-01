@@ -8,10 +8,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; set; }
 
+    private CameraManager cameraManager;
+
     public GameObject currentLauncher;
     public GameObject currentObjective;
     
-    private CameraManager cameraManager;
     public int missilesUsed;
     
     private void Awake()
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         cameraManager = FindFirstObjectByType<CameraManager>();
+
         missilesUsed = 0;
     }
     

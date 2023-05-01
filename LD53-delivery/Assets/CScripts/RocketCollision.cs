@@ -25,7 +25,7 @@ public class RocketCollision : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.CompareTag("Ground"))
         {
             Debug.Log("Rocket collided with ground.");
             isCollidingWithGround = true;

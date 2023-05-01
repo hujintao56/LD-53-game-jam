@@ -14,20 +14,23 @@ public class LoadScene : MonoBehaviour
     private Color hoverColor;
     private Color originalColor;
     private AudioSource enterAudio;
+    private AudioSource ruleAudioSource;
     private SpriteRenderer sprite;
     private float originalScale;
 
     private void Start()
     {
         //获取UI交互数据
-        pp = GameObject.Find("PlayerProfileModule").GetComponent<PlayerProgression>(); 
+        pp = GameObject.Find("PlayerProfileModule").GetComponent<PlayerProgression>();
+        ruleAudioSource = GetComponent<AudioSource>();
+        
         if (pp != null)
         {
             hoverScale = pp.uiHoverScale;
             hoverColor = pp.uiHoverColor;
             originalColor = pp.uiOriginalColor;
             originalScale = this.transform.localScale.x;
-            if (pp.uiEnterAudio != null && enterAudio != null)
+            if (pp.uiEnterAudio != null)
             {
                 enterAudio = pp.uiEnterAudio;
             }
@@ -47,6 +50,7 @@ public class LoadScene : MonoBehaviour
         else if (type == ButtonType.Rule)
         {
             pp.Rule();
+            ruleAudioSource.Play();
         }
         else if (type == ButtonType.Exit)
         {
@@ -66,10 +70,11 @@ public class LoadScene : MonoBehaviour
         this.transform.localScale = originalScale * hoverScale;
         if (enterAudio != null)
         {
-            if (!enterAudio.isPlaying)
-            {
-                enterAudio.Play();
-            }
+            enterAudio.Play();
+            // if (!enterAudio.isPlaying)
+            // {
+            
+            // }
         }
     }
 }

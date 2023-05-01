@@ -24,7 +24,6 @@ public class IndicatorScript : MonoBehaviour
     {
         if (!rd.isVisible)
         {
-            print("invisible");
             if (!indicator.activeSelf)
             {
                 indicator.SetActive(true);
@@ -43,7 +42,6 @@ public class IndicatorScript : MonoBehaviour
         }
         else
         {
-            print("visible");
             if (indicator.activeSelf)
             {
                 indicator.SetActive(false);
