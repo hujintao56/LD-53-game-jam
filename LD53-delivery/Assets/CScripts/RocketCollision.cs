@@ -10,15 +10,15 @@ public class RocketCollision : MonoBehaviour
     
     public int explosionCount = 6;
 
-    private bool isCollidingWithGround = false;
+    [SerializeField]
+    private float packExplosionForceMult = 1f;
 
-    // Start is called before the first frame update
+    private bool isCollidingWithGround = false;
+    
     void Start()
     {
         
     }
-
-    // Update is called once per frame
     void Update()
     {
     }
@@ -56,7 +56,7 @@ public class RocketCollision : MonoBehaviour
         Vector3 position = transform.position + (normal * 0.5f);
         GameObject pack = Instantiate(packPrefab, position, Quaternion.identity);
         Rigidbody2D packRb = pack.GetComponent<Rigidbody2D>();
-        packRb.AddForce(normal, ForceMode2D.Impulse);
+        packRb.AddForce(normal * packExplosionForceMult, ForceMode2D.Impulse);
     }
 
     private void FixedUpdate()

@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Camera;
 using UnityEngine;
 
 public class Slingshot : MonoBehaviour
 {
+    private GameManager gameManager;
+    private CameraManager cameraManager;
+    
     [SerializeField] private Transform launchTransform; // The Transform component of the launch object
     [SerializeField] private Transform barrelTransform; // The Transform component of the barrel
     [SerializeField] private Transform rocketTransform; // The Transform component of the rocket
@@ -13,7 +17,7 @@ public class Slingshot : MonoBehaviour
     [SerializeField] private LineRenderer aimingLine; // The LineRenderer component of the aiming line
     [SerializeField] private float reloadTime = 3f; // The time it takes to reload the slingshot
 
-    private float launchSpeedMultiplier = 0.1f; // Change this value to adjust the launch speed
+    private readonly float launchSpeedMultiplier = 0.1f; // Change this value to adjust the launch speed
     private Vector3 rocketOriginalPosition;   // The original position of the rocket
     private Quaternion rocketOriginalRotation; // The original rotation of the rocket
     private Vector3 barrelOriginalPosition;   // The original position of the barrel
@@ -31,6 +35,9 @@ public class Slingshot : MonoBehaviour
 
     private void Start()
     {
+        gameManager = GameManager.Instance;
+        cameraManager = FindFirstObjectByType<CameraManager>();
+        
         rocketOriginalPosition = rocketTransform.position;
         rocketOriginalRotation = rocketTransform.rotation;
         barrelOriginalPosition = barrelTransform.position;
@@ -77,6 +84,8 @@ public class Slingshot : MonoBehaviour
 
     private void OnMouseDown()
     {
+        cameraManager.FollowPackage(gameObject);
+        
         isAiming = true;
         mouseDownPosition = Input.mousePosition;
         launchForce = minLaunchForce;
@@ -111,7 +120,6 @@ public class Slingshot : MonoBehaviour
 
         // Apply the new angle to barrelTransform
         // barrelTransform.localEulerAngles = barrelOriginalAngles + angle * Vector3.forward;
-
 
         // Calculate the trajectory arc based on launch position, launch direction, and launch force
         Vector3[] linePositions = CalculateArcPoints(launchTransform.position, direction, launchForce);
@@ -163,6 +171,10 @@ public class Slingshot : MonoBehaviour
 
         rocketInstance.GetComponent<Rigidbody2D>().AddForce(launchSpeedMultiplier * launchForce * direction, ForceMode2D.Impulse);
         rocketInstance.GetComponent<Rigidbody2D>().gravityScale = setGravity;
+        
+        cameraManager.FollowPackage(rocketInstance);
+        gameManager.MissileUseCountUp();
+        
         Reset();
     }
 
