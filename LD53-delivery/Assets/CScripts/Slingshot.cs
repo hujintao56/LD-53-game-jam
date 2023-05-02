@@ -10,7 +10,14 @@ public class Slingshot : MonoBehaviour
     
     [SerializeField] private Transform launchTransform; // The Transform component of the launch object
     [SerializeField] private Transform barrelTransform; // The Transform component of the barrel
-    [SerializeField] private Transform rocketTransform; // The Transform component of the rocket
+    private Transform rocketTransform; // The Transform component of the rocket
+    private bool isNormal;
+    [SerializeField] private Transform normalRocketTransform; // The Transform component of the rocket
+    [SerializeField] private Transform crossRocketTransform;
+
+    public GameObject rocketPrefab; // Rocket prefab
+    public GameObject crossRocketPrefab; // Rocket prefab
+
     [SerializeField] private float minLaunchForce = 0.1f; // The minimum launch force
     [SerializeField] private float maxLaunchForce = 1f; // The maximum launch force
     [SerializeField] private float maxChargeTime = 2f; // The maximum charge time
@@ -37,7 +44,16 @@ public class Slingshot : MonoBehaviour
     {
         gameManager = GameManager.Instance;
         cameraManager = FindFirstObjectByType<CameraManager>();
-        
+
+        if (normalRocketTransform.gameObject.activeSelf) { 
+            rocketTransform = normalRocketTransform;
+            isNormal = true;
+        }
+        else {
+            rocketTransform = crossRocketTransform;
+            isNormal = false;
+        }
+
         rocketOriginalPosition = rocketTransform.position;
         rocketOriginalRotation = rocketTransform.rotation;
         barrelOriginalPosition = barrelTransform.position;
@@ -60,6 +76,17 @@ public class Slingshot : MonoBehaviour
     {
         if (!isAiming)
             return;
+
+        if (normalRocketTransform.gameObject.activeSelf)
+        {
+            rocketTransform = normalRocketTransform;
+            isNormal = true;
+        }
+        else
+        {
+            rocketTransform = crossRocketTransform;
+            isNormal = false;
+        }
 
         Aim();
         Charge();
@@ -121,8 +148,8 @@ public class Slingshot : MonoBehaviour
         // Apply the new angle to barrelTransform
         // barrelTransform.localEulerAngles = barrelOriginalAngles + angle * Vector3.forward;
 
-        // Calculate the trajectory arc based on launch position, launch direction, and launch force
-        Vector3[] linePositions = CalculateArcPoints(launchTransform.position, direction, launchForce);
+        // Calculate the trajectory arc based on rocket position, launch direction, and launch force
+        Vector3[] linePositions = CalculateArcPoints(rocketTransform.position, direction, launchForce);
         aimingLine.positionCount = linePositions.Length;
         aimingLine.SetPositions(linePositions);
 
@@ -162,14 +189,21 @@ public class Slingshot : MonoBehaviour
     {
         // Debug.Log("Launch Direction: " + direction);
         // Debug.Log("Launch Magnitude: " + launchForce);
-
-        GameObject rocketInstance = Instantiate(rocketTransform.gameObject, rocketTransform.position, rocketTransform.rotation);
+        GameObject rocketInstance;
+        if (isNormal)
+            rocketInstance = Instantiate(rocketPrefab, rocketTransform.position, rocketTransform.rotation);
+        else
+            rocketInstance = Instantiate(crossRocketPrefab, crossRocketTransform.position, crossRocketTransform.rotation);
         rocketInstance.GetComponent<RocketCollision>().cameraManager = cameraManager;
-        rocketInstance.transform.localScale = rocketTransform.localScale * 10;
+        //rocketInstance.transform.localScale = rocketTransform.localScale * 10;
         rocketInstance.GetComponent<Collider2D>().isTrigger = false;
         rocketInstance.GetComponent<Rigidbody2D>().isKinematic = false;
         rocketInstance.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-        rocketTransform.gameObject.SetActive(false);
+        //rocketTransform.gameObject.SetActive(false);
+        if (isNormal)
+            normalRocketTransform.gameObject.SetActive(false);
+        else
+            crossRocketTransform.gameObject.SetActive(false);
 
         rocketInstance.GetComponent<Rigidbody2D>().AddForce(launchSpeedMultiplier * launchForce * direction, ForceMode2D.Impulse);
         rocketInstance.GetComponent<Rigidbody2D>().gravityScale = setGravity;
@@ -190,7 +224,10 @@ public class Slingshot : MonoBehaviour
     {
         yield return new WaitForSeconds(reloadTime);
 
-        rocketTransform.gameObject.SetActive(true);
+        if (isNormal)
+           normalRocketTransform.gameObject.SetActive(true);
+        else
+            crossRocketTransform.gameObject.SetActive(true);
         //rocketTransform.position = launchTransform.position;
         //rocketTransform.rotation = Quaternion.identity;
         rocketTransform.position = rocketOriginalPosition;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Camera;
 using UnityEngine;
 
+public enum RocketType { Normal, Cross }
+
 public class RocketCollision : MonoBehaviour
 {
     public CameraManager cameraManager;
@@ -10,20 +12,40 @@ public class RocketCollision : MonoBehaviour
     public GameObject packPrefab; // Pack prefab
     public AudioClip explosionSound; // Explosion sound
     public GameObject explosionPrefab; // Explosion prefab
-    
+
+    public RocketType rocketType;
     public int explosionCount = 6;
 
     [SerializeField]
     private float packExplosionForceMult = 1f;
 
     private bool isCollidingWithGround = false;
-    
+
+    // for cross type:
+    private Collider2D col;
+    private LayerMask wall;
+    private bool touchF;
+
     void Start()
     {
-        
+        col = GetComponent<Collider2D>();
+        wall = LayerMask.NameToLayer("Map");
     }
     void Update()
     {
+        
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (rocketType == RocketType.Cross)
+            col.isTrigger = false;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (rocketType == RocketType.Cross)
+            col.isTrigger = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -31,13 +53,13 @@ public class RocketCollision : MonoBehaviour
         if (collision.gameObject.CompareTag("FloorOrBuild"))
         {
             Debug.Log("Rocket collided with ground.");
-            isCollidingWithGround = true;
             explosionCount--;
             if (explosionCount <= 6)
             {
                 Debug.Log("Game over! Too many landings.");
             }
             Explode();
+            isCollidingWithGround = true;
         }
     }
 

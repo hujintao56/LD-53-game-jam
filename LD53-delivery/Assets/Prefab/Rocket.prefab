@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 7650844440322005034}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0007, y: 0.0728, z: 0}
-  m_LocalScale: {x: 0.015000002, y: 0.015000002, z: 0.015000001}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -120,9 +120,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17cf7f453dc3ea842b36eed2b6f7bb1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraManager: {fileID: 0}
   packPrefab: {fileID: 3922132125833484863, guid: 46c4f7921b9f348458000392b449898d, type: 3}
   explosionSound: {fileID: 8300000, guid: fb3ac507ef60e324591e52f532e9c9d5, type: 3}
   explosionPrefab: {fileID: 7218980105244938734, guid: fb5a4538c939b16429066222aaccbd1c, type: 3}
+  rocketType: 0
   explosionCount: 6
   packExplosionForceMult: 1.5
 --- !u!61 &7390390487893469393
