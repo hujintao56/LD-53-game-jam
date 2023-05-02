@@ -5,6 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Cloud
+  - CIty_map
+  - FloorOrBuild
+  - UnrulyPeople
+  - Forest
+  - Mountain_map
+  - Cable_Car
+  - Swamp
+  - Flowing_Water
+  - Package
   layers:
   - Default
   - TransparentFX

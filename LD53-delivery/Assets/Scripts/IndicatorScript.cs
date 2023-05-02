@@ -8,9 +8,11 @@ public class IndicatorScript : MonoBehaviour
 {
     public GameObject indicator;
     public GameObject cam;
-
+    public GameObject board;
     private Renderer rd;
-    
+    private bool isLevelCompleted = false;
+    private bool isBoardDismissed = false;
+
     void Start()
     {
         if (cam == null)
@@ -45,6 +47,35 @@ public class IndicatorScript : MonoBehaviour
             if (indicator.activeSelf)
             {
                 indicator.SetActive(false);
+            }
+        }
+
+        if (isLevelCompleted && !isBoardDismissed && Input.GetMouseButtonDown(0))
+        {
+            isBoardDismissed = true;
+            board.SetActive(false);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "Package" && !isLevelCompleted)
+        {
+            isLevelCompleted = true;
+            board.SetActive(true);
+
+            // Move the board to the center of the camera
+            Vector3 cameraPosition = cam.transform.position;
+            Vector3 boardPosition = board.transform.position;
+            boardPosition.x = cameraPosition.x;
+            boardPosition.y = cameraPosition.y;
+            board.transform.position = boardPosition;
+
+            // Set the sorting order of the board's sprite renderer to a high value
+            SpriteRenderer boardSpriteRenderer = board.GetComponent<SpriteRenderer>();
+            if (boardSpriteRenderer != null)
+            {
+                boardSpriteRenderer.sortingOrder = 999;
             }
         }
     }
