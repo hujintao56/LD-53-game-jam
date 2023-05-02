@@ -3124,6 +3124,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 654459012}
     m_Modifications:
+    - target: {fileID: -2818283655340607038, guid: 147c6f373148c90479828452c8f81e04, type: 3}
+      propertyPath: artillery
+      value: 
+      objectReference: {fileID: 9066927965858002417, guid: 302ec33db12e8fc499f8c42075ad65c4, type: 3}
     - target: {fileID: 7650844440322005034, guid: 147c6f373148c90479828452c8f81e04, type: 3}
       propertyPath: m_Name
       value: Rocket
@@ -9750,7 +9754,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 753216481}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.97, y: 11.63, z: -19.886112}
+  m_LocalPosition: {x: 3.64, y: 11.63, z: -19.886112}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11186,6 +11190,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1673712984976608736, guid: 597cc082acd1a4f4ebc62deccf2bf39d, type: 3}
+      propertyPath: artillery
+      value: 
+      objectReference: {fileID: 9066927965858002417, guid: 302ec33db12e8fc499f8c42075ad65c4, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 597cc082acd1a4f4ebc62deccf2bf39d, type: 3}
 --- !u!1 &846521372
@@ -15001,7 +15009,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1226053486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.97, y: 11.63, z: -19.886112}
+  m_LocalPosition: {x: 3.64, y: 11.63, z: -19.886112}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

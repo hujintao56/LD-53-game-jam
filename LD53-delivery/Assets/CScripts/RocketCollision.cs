@@ -26,6 +26,16 @@ public class RocketCollision : MonoBehaviour
     private LayerMask wall;
     private bool touchF;
 
+    // Feature for golf
+    public int score { get; private set; }
+    /// <summary>
+    /// 放生成炮台的预制件
+    /// 炮台的预制件一定要加刚体和碰撞器，不然掉虚空了
+    /// </summary>
+    public GameObject artillery;
+    private bool IsCreat;
+
+
     void Start()
     {
         col = GetComponent<Collider2D>();
@@ -50,6 +60,8 @@ public class RocketCollision : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
+
         if (collision.gameObject.CompareTag("FloorOrBuild"))
         {
             Debug.Log("Rocket collided with ground.");
@@ -60,7 +72,7 @@ public class RocketCollision : MonoBehaviour
             }
             Explode();
             isCollidingWithGround = true;
-        }
+        }        
     }
 
     private void Explode()
@@ -83,6 +95,15 @@ public class RocketCollision : MonoBehaviour
         cameraManager.FollowPackage(pack);
         Rigidbody2D packRb = pack.GetComponent<Rigidbody2D>();
         packRb.AddForce(normal * packExplosionForceMult, ForceMode2D.Impulse);
+
+
+        if (IsCreat == false)
+        {
+            Instantiate(artillery, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+            score++;
+            IsCreat = true;
+        }
     }
 
     private void FixedUpdate()
