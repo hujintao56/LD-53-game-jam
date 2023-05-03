@@ -22,7 +22,6 @@ public class Slingshot : MonoBehaviour
     [SerializeField] private float maxLaunchForce = 1f; // The maximum launch force
     [SerializeField] private float maxChargeTime = 2f; // The maximum charge time
     [SerializeField] private LineRenderer aimingLine; // The LineRenderer component of the aiming line
-    [SerializeField] private float reloadTime = 3f; // The time it takes to reload the slingshot
 
     private readonly float launchSpeedMultiplier = 0.1f; // Change this value to adjust the launch speed
     private Vector3 rocketOriginalPosition;   // The original position of the rocket
@@ -30,8 +29,7 @@ public class Slingshot : MonoBehaviour
     private Vector3 barrelOriginalPosition;   // The original position of the barrel
     private Quaternion barrelOriginalRotation; // The original rotation of the barrel
     private Quaternion launchOriginalRotation; // The original rotation of the launch
-
-    private Vector3 barrelOriginalAngles;   // The original rotation of the barrel
+    
     private Vector3 mouseDownPosition;        // The screen position where the mouse is clicked down
     private Vector3 direction;
     private float chargeTime;                 // The time that the slingshot is charged up
@@ -58,9 +56,9 @@ public class Slingshot : MonoBehaviour
         rocketOriginalRotation = rocketTransform.rotation;
         barrelOriginalPosition = barrelTransform.position;
         barrelOriginalRotation = barrelTransform.rotation;
+        
         launchOriginalRotation = launchTransform.rotation;
-
-        barrelOriginalAngles = barrelTransform.localEulerAngles;
+        
         aimingLine.enabled = false;
 
         /* Set the launch object's position to the left bottom corner of the barrel and rocket
@@ -79,7 +77,7 @@ public class Slingshot : MonoBehaviour
 
         if (normalRocketTransform.gameObject.activeSelf)
         {
-            rocketTransform = normalRocketTransform;
+             rocketTransform = normalRocketTransform;
             isNormal = true;
         }
         else
@@ -90,17 +88,6 @@ public class Slingshot : MonoBehaviour
 
         Aim();
         Charge();
-    }
-    void OnMouseEnter()
-    {
-        //print("Slingshot:OnMouseEnter()");
-        Debug.Log("Mouse enter");
-    }
-
-    void OnMouseExit()
-    {
-        //print("Slingshot:OnMouseExit()");
-        Debug.Log("Mouse exit");
     }
 
     void OnMouseOver()
@@ -210,28 +197,21 @@ public class Slingshot : MonoBehaviour
         
         cameraManager.FollowPackage(rocketInstance);
         gameManager.MissileUseCountUp();
-        
-        Reset();
     }
 
-
-    private void Reset()
+    public void Reset(Vector3 newPos)
     {
-        StartCoroutine(ResetAfterDelay());
-    }
-
-    private IEnumerator ResetAfterDelay()
-    {
-        yield return new WaitForSeconds(reloadTime);
-
+        print("reset");
         if (isNormal)
-           normalRocketTransform.gameObject.SetActive(true);
+            normalRocketTransform.gameObject.SetActive(true);
         else
             crossRocketTransform.gameObject.SetActive(true);
         //rocketTransform.position = launchTransform.position;
         //rocketTransform.rotation = Quaternion.identity;
-        rocketTransform.position = rocketOriginalPosition;
-        rocketTransform.rotation = rocketOriginalRotation;
+        
+        // rocketTransform.position = rocketOriginalPosition;
+        // rocketTransform.rotation = rocketOriginalRotation;
+        
         rocketTransform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         rocketTransform.GetComponent<Rigidbody2D>().angularVelocity = 0f;
         rocketTransform.GetComponent<Rigidbody2D>().gravityScale = 0;
@@ -239,10 +219,13 @@ public class Slingshot : MonoBehaviour
         // barrelTransform.localEulerAngles = barrelOriginalRotation;
         // barrelTransform.position = launchTransform.position;
         // barrelTransform.rotation = Quaternion.identity;
-        barrelTransform.position = barrelOriginalPosition;
-        barrelTransform.rotation = barrelOriginalRotation;
+        
+        // barrelTransform.position = barrelOriginalPosition;
+        // barrelTransform.rotation = barrelOriginalRotation;
         chargeTime = 0;
-
+        
+        //Move to new location
+        transform.position = newPos;
         cameraManager.FocusOnLauncher();
     }
 }

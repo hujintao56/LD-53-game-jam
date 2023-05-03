@@ -17,7 +17,7 @@ namespace Camera
         public GameObject packageFollowObject;
         public float edgeSize = 30f;
         public float moveSpeed = 5f;
-        private bool followingPackage;
+        [SerializeField] private bool followingPackage;
             
         void Start()
         {
@@ -27,6 +27,8 @@ namespace Camera
             
             followingPackage = false;
             camFollowPos = camFollowObject.transform.position = cam1.transform.position;
+
+            FocusOnLauncher();
         }
 
         public void FollowPackage(GameObject package)
